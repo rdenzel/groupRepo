@@ -1,6 +1,6 @@
 groupRepo
 =========
 
-Can you cange this?
+Can you change this?
 
 the repo for the group
