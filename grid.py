@@ -1,5 +1,6 @@
 import pygame, sys, random
 from pygame.locals import *
+from square import Square
 
 
 
@@ -12,6 +13,7 @@ class Grid():
 	square_size = 0
 	color = (255,255,255)
 	pos = []
+	squares = []
 
 
 	def __init__(self,the_height,the_width,ss):
@@ -20,25 +22,26 @@ class Grid():
 		self.square_size = ss
 		pos = []
 
+		
 		#I don't use this yet, but might come in handy later. lol not sure really
 		for i in range(self.width):
 			for j in range(self.height):
-				pos.append([i,j])
+				self.squares.append(Square([(i*self.square_size),(j*self.square_size)],"regular",False,self.square_size))
 				#print [i,j]
+		
+			
 
 
 #-----------The instructions for moving left,right,up,down--------
 	def right (self,position):
 
 		if  position[0]+1>=self.width:
-			print "too far to the right"
 			return position
 
 		return [position[0]+1,position[1]]	
 
 	def left (self,position):
 		if position[0]<1:
-			print "too far to the right"
 			return position
 	
 
@@ -46,14 +49,12 @@ class Grid():
 		
 	def up (self,position):	
 		if position[1]<1:
-			print "too far up"
 			return position	
 
 		return [position[0],position[1]-1]	
 		
 	def down (self,position):
 		if  position[1]+1>=self.height:	
-			print "too far down"
 			return position	
 
 		return [position[0],position[1]+1]		
@@ -65,17 +66,42 @@ class Grid():
 		return[(position[0]*self.square_size),(position[1]*self.square_size)]	
 
 
+	def changeSquare(self,position,color):
+		for i in range(self.width*self.height):
+			if position[0]>self.squares[i].pos[0] and position[0]<self.squares[i].pos[0]+self.square_size:
+				if position[1]>self.squares[i].pos[1] and position[1]<self.squares[i].pos[1]+self.square_size:
+					self.squares[i].changeColor((0,0,0))
+					i = 1000 
+
+
+
+
+	def getSquare(self,position):
+	
+		for i in range(self.width):
+			for j in range(self.height):
+				if position[0]>i*self.square_size and position[0]<(i+1)*self.square_size:
+					if position[1]>j*self.square_size and position[1]<(j+1)*self.square_size:
+						return [i,j]
+
 
 #--------draws the grid.  easier here since it takes up too much space in the main
 
 	def draw (self,screen):
+		
+		for i in range (self.width*self.height):	
+			self.squares[i].draw(screen)
+
+
 		for i in range (self.width):
 			pygame.draw.line(screen,self.color,[self.square_size*i,0],[self.square_size*i,self.square_size*self.height])
 			#print i
 
 		for j in range (self.height):
 			pygame.draw.line(screen,self.color,[0,self.square_size*j],[self.square_size*self.width,self.square_size*j])	
-			#print j
+			#print j	
+				
+
 
 '''
 

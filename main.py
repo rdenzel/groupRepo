@@ -3,6 +3,7 @@ from pygame.locals import *
 from soldiers import Soldier
 from grid import Grid
 from random import randint
+from square import Square 
 
 pygame.init()
 
@@ -39,6 +40,8 @@ soldier1_y = grid.getCoor(soldier1_pos)[1]
 player_x = grid.getCoor(player_pos)[0]
 player_y = grid.getCoor(player_pos)[1]
 
+
+the_square = Square([100,100],"regular",True,100)
 
 
 def moveSoldier(direction):
@@ -109,8 +112,6 @@ print("code es bueno!")
 #set up screen
 screen = pygame.display.set_mode((500,500))
 
-#me = pygame.draw.rect(screen,white,[100,100,100,100],2)
-
 done = False
 
 while(not done):
@@ -118,6 +119,12 @@ while(not done):
 	for event in pygame.event.get():
 		if event.type == pygame.QUIT:
 			done=True
+
+		elif event.type==MOUSEBUTTONDOWN:
+			#print("Mouse click")
+			#print grid.getSquare(pygame.mouse.get_pos())	
+			
+			grid.changeSquare(pygame.mouse.get_pos(),white)
 
 		elif event.type ==KEYDOWN:
 			if event.key == K_LEFT:
@@ -137,10 +144,7 @@ while(not done):
 	
 	if (x>95):
 		y = x%4
-		moveSoldier(y)
-		print y
-	else:
-		print "not"		
+		moveSoldier(y)	
 	
 
 
@@ -153,10 +157,12 @@ while(not done):
 	grid.draw(screen)
 	#print player_x
 
-	#draw the player
+
+
+	#------draw the player
 	pygame.draw.rect(screen,white,[player_x,player_y,player_size,player_size])
 
-	#draw the soldier
+	#------draw the soldier
 	pygame.draw.rect(screen,(255,0,0),[soldier1_x,soldier1_y,player_size,player_size])
 
 
